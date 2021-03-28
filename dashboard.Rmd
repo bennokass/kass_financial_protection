@@ -13,6 +13,7 @@ library(tidyverse)
 library(scales)
 library(DT)
 library(plotly)
+library(knitr)
 data <- readRDS("complaints.rds")
 
 
@@ -21,7 +22,7 @@ data <- readRDS("complaints.rds")
 Column {data-width=650}
 -----------------------------------------------------------------------
 
-### Chart A
+### Number of complaints by state
 
 ```{r}
 data %>% group_by(state) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate(prop=percent(n/sum(n))) %>% datatable
@@ -31,17 +32,17 @@ data %>% group_by(state) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart B
+### Pie chart of timely response rate
 
 ```{r}
 data %>% group_by(timely_response) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate(prop=percent(n/sum(n))) %>% plot_ly(labels=~timely_response, values=~n,type="pie")
 
 ```
 
-### Chart C
+### Heatmap of submitted via and product
 
 ```{r}
-data %>% group_by(submitted_via,product) %>% count() %>% pivot_wider(id_cols = submitted_via, names_from = product, values_from = n, values_fill = 0)
+data %>% group_by(submitted_via,product) %>% count() %>% plot_ly(x=~submitted_via, y=~product,z=~n,type="heatmap")
 
 ```
 
