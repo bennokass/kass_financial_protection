@@ -1,0 +1,48 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+
+library(tidyverse)
+library(scales)
+library(DT)
+library(plotly)
+data <- readRDS("complaints.rds")
+
+
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+data %>% group_by(state) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate(prop=percent(n/sum(n))) %>% datatable
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+data %>% group_by(timely_response) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate(prop=percent(n/sum(n))) %>% plot_ly(labels=~timely_response, values=~n,type="pie")
+
+```
+
+### Chart C
+
+```{r}
+data %>% group_by(submitted_via,product) %>% count() %>% pivot_wider(id_cols = submitted_via, names_from = product, values_from = n, values_fill = 0)
+
+```
+
+
