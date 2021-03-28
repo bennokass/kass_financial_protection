@@ -19,6 +19,11 @@ data %>% group_by(state) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate
 
 
 ```
+percent of timely response
+
+```{r}
+data %>% group_by(timely_response) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate(prop=percent(n/sum(n)))
 
 
 
+```
