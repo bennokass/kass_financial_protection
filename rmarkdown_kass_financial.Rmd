@@ -1,0 +1,24 @@
+---
+title: "rmarkdown1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(scales)
+data <- readRDS("complaints.rds")
+
+```
+
+## exploration
+Number of complaints per state
+
+```{r}
+data %>% group_by(state) %>% count() %>% arrange(desc(n)) %>% ungroup %>% mutate(prop=percent(n/sum(n)))
+
+
+```
+
+
+
