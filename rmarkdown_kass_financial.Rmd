@@ -27,3 +27,13 @@ data %>% group_by(timely_response) %>% count() %>% arrange(desc(n)) %>% ungroup 
 
 
 ```
+
+Comparing the submitted via and product column
+```{r}
+
+data %>% group_by(submitted_via,product) %>% count() %>% pivot_wider(id_cols = submitted_via, names_from = product, values_from = n, values_fill = 0)
+
+
+
+```
+
